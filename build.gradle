@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.1'
     id 'io.spring.dependency-management' version '1.1.4'
+    id "com.diffplug.spotless" version "6.20.0"
 }
 
 group = 'com.pli'
@@ -21,6 +22,8 @@ repositories {
     mavenCentral()
 }
 
+ext.googleJavaFormatVersion = "1.17.0"
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -34,3 +37,23 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+spotless {
+    java {
+        removeUnusedImports()
+
+        googleJavaFormat("$googleJavaFormatVersion")
+    }
+}
+
+tasks.register('updateGitHooks', Copy) {
+    from './scripts/pre-commit'
+    into './.git/hooks'
+}
+
+tasks.register('makeGitHooksExecutable', Exec) {
+    commandLine 'chmod', '+x', './.git/hooks/pre-commit'
+    dependsOn updateGitHooks
+}
+
+compileJava.dependsOn makeGitHooksExecutable
