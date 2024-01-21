@@ -1,7 +1,2 @@
-spring:
-  security:
-    user:
-      name: pli
-      password: 1234
 server:
   port: 8088
