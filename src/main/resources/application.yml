@@ -1,2 +1,12 @@
 server:
   port: 8088
+
+spring:
+    datasource:
+      url: jdbc:mysql://localhost:3306/study
+      username: root
+    jpa:
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
