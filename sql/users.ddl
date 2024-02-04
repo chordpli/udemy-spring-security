@@ -10,10 +10,24 @@ create table `users`
 create table `authorities`
 (
     `id`        int         not null auto_increment,
-    `username`  varchar(45) not null,
-    `authority` varchar(45) not null,
-    primary key (`id`)
+    `customer_id` int not null,
+    `name`  varchar(45) not null,
+    primary key (`id`),
+    key `customer_id`(customer_id),
+    constraint `authorities_ibfk_1` foreign key (`customer_id`) references `customer` (`customer_id`)
 );
+
+insert into `authorities` (`customer_id`, `name`)
+values (1, `VIEWACCOUNT`);
+
+insert into `authorities` (`customer_id`, `name`)
+values (1, `VIEWCARDS`);
+
+insert into `authorities` (`customer_id`, `name`)
+values (1, `VIEWLOANS`);
+
+insert into `authorities` (`customer_id`, `name`)
+values (1, `VIEWBALANCE`);
 
 
 create table `customer`
