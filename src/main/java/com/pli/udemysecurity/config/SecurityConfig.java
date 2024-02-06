@@ -30,7 +30,15 @@ public class SecurityConfig {
     return http.authorizeHttpRequests(
             (request) ->
                 request
-                    .requestMatchers("/myAccount", "/myBalance", "myLoans", "myCards")
+                    .requestMatchers("/myAccount")
+                    .hasAnyAuthority("VIEWACCOUNT")
+                    .requestMatchers("/myBalance")
+                    .hasAnyAuthority("VIEWACCOUNT", "VIEWBALANCE")
+                    .requestMatchers("/myLoans")
+                    .hasAuthority("VIEWLOANS")
+                    .requestMatchers("/myCards")
+                    .hasAuthority("VIEWCARDS")
+                    .requestMatchers("/user")
                     .authenticated()
                     .requestMatchers("/notices", "/contact", "/register")
                     .permitAll())
