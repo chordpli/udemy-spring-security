@@ -1,9 +1,11 @@
 package com.pli.udemysecurity.config;
 
+import com.pli.udemysecurity.model.Authority;
 import com.pli.udemysecurity.model.Customer;
 import com.pli.udemysecurity.repository.CustomerRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,17 +32,24 @@ public class UdemyUserPwdAuthenticationProvider implements AuthenticationProvide
     String pwd = authentication.getCredentials().toString();
     List<Customer> customer = customerRepository.findByEmail(username);
 
-    if (customer.size() > 0) {
-      if (passwordEncoder.matches(pwd, customer.getFirst().getPassword())) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(customer.getFirst().getRoles()));
-        return new UsernamePasswordAuthenticationToken(username, pwd, authorities);
+    if (!customer.isEmpty()) {
+      if (passwordEncoder.matches(pwd, customer.getFirst().getPwd())) {
+        return new UsernamePasswordAuthenticationToken(
+            username, pwd, getGrantedAuthorities(customer.getFirst().getAuthorities()));
       } else {
         throw new BadCredentialsException("Invalid password");
       }
     } else {
       throw new BadCredentialsException("No user registered with this email");
     }
+  }
+
+  private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
+    List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+    for (Authority authority : authorities) {
+      grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
+    }
+    return grantedAuthorities;
   }
 
   @Override
