@@ -29,6 +29,11 @@ values (1, `VIEWLOANS`);
 insert into `authorities` (`customer_id`, `name`)
 values (1, `VIEWBALANCE`);
 
+insert into `authorities` (`customer_id`, `name`)
+values (1, `ROLE_USER`);
+
+insert into `authorities` (`customer_id`, `name`)
+values (1, `ROLE_ADMIN`);
 
 create table `customer`
 (
