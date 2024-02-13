@@ -1,5 +1,6 @@
 package com.pli.udemysecurity.config;
 
+import com.pli.udemysecurity.filter.AuthoritiesLoggingAfterFilter;
 import com.pli.udemysecurity.filter.CsrfCookieFilter;
 import com.pli.udemysecurity.filter.RequestValidationBeforeFilter;
 import java.util.List;
@@ -62,6 +63,7 @@ public class SecurityConfig {
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
         .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+        .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
         .build();
   }
 
