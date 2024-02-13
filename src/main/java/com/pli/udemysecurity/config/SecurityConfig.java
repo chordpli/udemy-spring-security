@@ -1,6 +1,7 @@
 package com.pli.udemysecurity.config;
 
 import com.pli.udemysecurity.filter.CsrfCookieFilter;
+import com.pli.udemysecurity.filter.RequestValidationBeforeFilter;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,6 +61,7 @@ public class SecurityConfig {
                     .ignoringRequestMatchers("/contact", "/register")
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+        .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
         .build();
   }
 
