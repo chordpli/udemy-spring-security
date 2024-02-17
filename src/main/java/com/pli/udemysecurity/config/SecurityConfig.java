@@ -53,8 +53,8 @@ public class SecurityConfig {
                     .authenticated()
                     .requestMatchers("/notices", "/contact", "/register")
                     .permitAll())
-        .securityContext((securityContext) -> securityContext.requireExplicitSave(false))
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+        .sessionManagement(
+            (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .httpBasic(Customizer.withDefaults())
         .formLogin(Customizer.withDefaults())
         .csrf(
@@ -74,6 +74,7 @@ public class SecurityConfig {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(List.of("http://localhost:4200"));
     configuration.setAllowedMethods(List.of("*"));
+    configuration.setExposedHeaders(List.of("Authorization"));
     configuration.setAllowCredentials(true);
     configuration.addAllowedHeader("*");
     configuration.setMaxAge(3600L);
