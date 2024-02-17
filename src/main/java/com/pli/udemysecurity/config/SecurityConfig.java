@@ -1,9 +1,6 @@
 package com.pli.udemysecurity.config;
 
-import com.pli.udemysecurity.filter.AuthoritiesLoggingAfterFilter;
-import com.pli.udemysecurity.filter.AuthoritiesLoggingAtFilter;
-import com.pli.udemysecurity.filter.CsrfCookieFilter;
-import com.pli.udemysecurity.filter.RequestValidationBeforeFilter;
+import com.pli.udemysecurity.filter.*;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -66,6 +63,7 @@ public class SecurityConfig {
         .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
         .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
         .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
+        .addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class)
         .build();
   }
 
