@@ -64,6 +64,7 @@ public class SecurityConfig {
         .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
         .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
         .addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class)
+        .addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class)
         .build();
   }
 
